@@ -6,9 +6,10 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
   <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css' rel='stylesheet' type='text/css'/>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/r-2.1.0/se-1.2.0/datatables.min.css">
-  <link rel="stylesheet" type="text/css" href="keen/keen-dashboards.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="keen/keen-dashboards.css" /> -->
 </head>
 <style>
+
 .heading {
 	font-size: 26px;
 	font-weight: bold;
@@ -19,7 +20,7 @@
 	padding-top: 8px;
 }
 .row{
-	padding-top: 55px;
+	padding-top: 50px;
 }
 .navbar-brand-subheading {
 	font-size: 20px;
@@ -29,9 +30,14 @@
 	font-family: 'Open Sans', sans-serif;
 	font-family: 'Roboto', sans-serif;	
 }
-
+.navbar-inverse{
+	background-color: #113c5c !important;
+	border-color: #113c5c !important;
+}
 body {
 	background-color: white;
+	padding-bottom:0px !important;
+	padding-top:0px !important;
 }
 
 #chart-01{
@@ -39,6 +45,7 @@ body {
     width: 100%;
 	height: 100%;
     float: left;
+	padding: 5px;
 }
 div.tooltip {
 	color: #222;
@@ -53,9 +60,9 @@ div.tooltip {
 }
 
 #map-container{
-	height: 900px;
+	height: 890px;
 	width: 1410px;
-	border: 3px solid black;
+	border: 2px solid #3d4a57;
 	position: relative;
 	display: block;
 }
@@ -68,11 +75,13 @@ div.tooltip {
 	display: block;
 }
 #table-container{
-	height: 900px;
+	height: 890px;
 	width: 100%;
-	border: 3px solid black;
+	border: 2px solid #3d4a57;
 	display: block;
+	background-color: white;
 }
+
 #img{
 	float: left;
 	height: 35px;
@@ -100,43 +109,45 @@ tr.shown td.details-control {
 	background-repeat: no-repeat;
 	background-position: center;
 	float: right;
-	background-size: 60px;
+	background-size: 70px;
 	height: 50px;
 	width: 110px;	 
 }
 
+
 </style>
 <body class="application">
+<div class="container-fluid" style="margin-top:10px;margin-bottom:0">
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<a class="logo" href="https://www1.nyc.gov/site/buildings/index.page" target="_blank"> </a>
 	  <div class="heading">
 			ACTIVE AFTER HOURS VARIANCES (AS OF <span id="today"></span>)		
 	  </div>
 	</div>
+	<div class="row">
+		  <div class="col-md-9">
+			  <div class="chart-stage" id="map-container">
+				<div id="map"></div>
+			  </div>
+		  </div>
 
-<div class="row">
-      <div class="col-md-9">
-          <div class="chart-stage" id="map-container">
-            <div id="map"></div>
-          </div>
-      </div>
+			  <div class="col-md-3">
+				<div class="chart-wrapper" id="table-container">
+				  <div class="chart-stage" id="chart-01">
+					<table id="riskTable" class="display" style="width:100%">
+						<thead>
+							<tr>
+								<th></th>
+								<th>ADDRESS</th>
+								<th>BOROUGH</th>
+							</tr>
+						</thead>			
+					</table>
 
-          <div class="col-md-3">
-            <div class="chart-wrapper" id="table-container">
-              <div class="chart-stage" id="chart-01">
-				<table id="riskTable" class="display" style="width:100%">
-					<thead>
-						<tr>
-							<th></th>
-							<th>ADDRESS</th>
-							<th>BOROUGH</th>
-						</tr>
-					</thead>			
-				</table>
-
-              </div>
-            </div>
-          </div>
+				  </div>
+				</div>
+			  </div>
+	</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
@@ -157,6 +168,7 @@ $(document).ready(function(){
 	d3.select("#today").html(today);
 	var latlong = [];
 	var selection = [];
+	var formatDate = d3.time.format("%-m/%-d/%Y").parse;
 var map = L.map('map').setView([40.713312, -73.977407], 11);
 
 L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
@@ -190,13 +202,17 @@ var width = $("#map").width(),
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.style("visibility", "visible");
 				tooltip.html(
-					'JOB NUMBER: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d.jobNum + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d.jobNum + '</a>' + '</br>' +
+					'JOB NUMBER: ' + d["Job Number"] + '</br>' +
 					'BIN: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?bin=' + d.bin + '&go4=+GO+&requestid=0" target="_blank">' + d.bin + '</a>' + '</br>' +								
-					'ADDRESS: '+ d.Address + ', ' + d.Borough + '</br>' +
+					'ADDRESS: '+ d.address + ', ' + d.Borough + '</br>' +
 					'COMMUNITY DISTRICT: ' + d.CD + '</br>' +
-					'JOB TYPE: '+ d.jobType + '</br>' +
-					'PERMIT EXPIRATION DATE: ' + d.permitExpDate
-					
+					'WORK TYPE: '+ d.workType + '</br>' +
+					'FILING TYPE: '+ d.filingType + '</br>' +
+					'REFERENCE NUMBER: ' + d.refNum + '</br>' +
+					'START DATE: ' + d["Start Date"] + '</br>' +
+					'END DATE: ' + d["End Date"] + '</br>' +
+					'WEEKEND FLAG: ' + d.weekend + '</br>' +
+					'SOURCE: ' + d.source					
 				)
 				if (d3.event.pageX > (width - 200)) {
 				   tooltip.style("left", (d3.event.pageX - 350) + "px");
@@ -227,16 +243,22 @@ var width = $("#map").width(),
 
 	});
 
-	d3.csv("https://raw.githubusercontent.com/NYCDOB/SiteSafety/gh-pages/data/ActivePermits_CS_SSM_SSC.csv",function(data){
+	d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
+	//d3.csv("data/ActiveAHVs.csv",function(data){
 				points = data.map(function(d){
-				d.latLng = [+d.lat,+d.lon];
+				d.latLng = [+d.Lat,+d.Lon];
 				d.bin = [d.BIN];				
-				d.Address = [d.Address];
+				d.address = [d.Address];
 				d.CD = d["Community Board"];
-				d.Borough = [d.Borough];
+				d.Borough = [d.Borough.toUpperCase()];
 				d.jobNum = d["Job Number"];
-				d.jobType = d["Job Type"];
-				d.permitExpDate = d["Permit Expiration Date"];
+				d.refNum = d["Reference Number"];
+				d.filingType = d["Filing Type Description"];
+				d.workType = d["Work Type"];
+				d.startDate = formatDate(d["Start Date"]);
+				d.endDate = formatDate(d["End Date"]);
+				d.source = [d.Source];
+				d.weekend = d["Weekend Flag"];
 			return d;
 			});
 		pointsOverlay.addTo(map);
@@ -267,23 +289,44 @@ var width = $("#map").width(),
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
 			'<tr>'+
 				'<td>Job Number:</td>'+
-				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d['Job Number'] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d['Job Number'] + '</a>'+'</td>'+
-			'</tr>'+
-			'<tr>'+
-				'<td>Job Type:</td>'+
-				'<td>'+d["Job Type"]+'</td>'+
+				//'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d['Job Number'] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d['Job Number'] + '</a>'+'</td>'+
+				'<td>'+[d.Job_Number] +'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>BIN:</td>'+
 				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?bin=' + [d.BIN] + '&go4=+GO+&requestid=0" target="_blank">' + [d.BIN] + '</a>'+'</td>'+
 			'</tr>'+
 			'<tr>'+
-				'<td>Permit Expiration Date:</td>'+
-				'<td>'+d["Permit Expiration Date"]+'</td>'+
+				'<td>Community District:</td>'+
+				'<td>'+[d.Community_Board]+'</td>'+
 			'</tr>'+
 			'<tr>'+
-				'<td>Community District:</td>'+
-				'<td>'+d["Community Board"]+'</td>'+
+				'<td>Work Type:</td>'+
+				'<td>'+[d.Work_Type]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Filing Type:</td>'+
+				'<td>'+[d.Filing_Type_Description]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Reference Number:</td>'+
+				'<td>'+[d.Reference_Number]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Start Date:</td>'+
+				'<td>'+[d.Start_Date]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>End Date:</td>'+
+				'<td>'+[d.End_Date]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Weekend Flag:</td>'+
+				'<td>'+[d.Weekend_Flag]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Source:</td>'+
+				'<td>'+[d.Source]+'</td>'+
 			'</tr>'+
 			
 		'</table>';
@@ -296,7 +339,7 @@ var width = $("#map").width(),
 		var table = $('#riskTable').DataTable({
 
 				"ajax": {
-					"url": "https://raw.githubusercontent.com/NYCDOB/SiteSafety/gh-pages/data/AActivePermits_CS_SSM_SSC.json",
+					"url": "https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVsJson.json",
 					"dataSrc": ""
 				},
 
