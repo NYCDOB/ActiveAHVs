@@ -211,7 +211,7 @@ var width = $("#map").width(),
 					'REFERENCE NUMBER: ' + d.refNum + '</br>' +
 					'START DATE: ' + d["Start Date"] + '</br>' +
 					'END DATE: ' + d["End Date"] + '</br>' +
-					'WEEKEND WORK: ' + d.weekend + '</br>' +
+					'WEEKEND WORK: ' + d.Weekend_Work + '</br>' +
 					'SOURCE: ' + d.source + '</br>' +
 					'REASON: ' + d.reason					
 				)
@@ -259,7 +259,7 @@ var width = $("#map").width(),
 				d.startDate = formatDate(d["Start Date"]);
 				d.endDate = formatDate(d["End Date"]);
 				d.source = [d.Source];
-				d.weekend = d["Weekend Flag"];
+				d.weekend = [d.Weekend_Work];
 				d.reason = [d.Reason];
 			return d;
 			});
@@ -324,7 +324,7 @@ var width = $("#map").width(),
 			'</tr>'+
 			'<tr>'+
 				'<td>Weekend Work:</td>'+
-				'<td>'+[d.Weekend_Flag]+'</td>'+
+				'<td>'+[d.Weekend_Work]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Source:</td>'+
