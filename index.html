@@ -211,8 +211,9 @@ var width = $("#map").width(),
 					'REFERENCE NUMBER: ' + d.refNum + '</br>' +
 					'START DATE: ' + d["Start Date"] + '</br>' +
 					'END DATE: ' + d["End Date"] + '</br>' +
-					'WEEKEND FLAG: ' + d.weekend + '</br>' +
-					'SOURCE: ' + d.source					
+					'WEEKEND WORK: ' + d.weekend + '</br>' +
+					'SOURCE: ' + d.source + '</br>' +
+					'REASON: ' + d.reason					
 				)
 				if (d3.event.pageX > (width - 200)) {
 				   tooltip.style("left", (d3.event.pageX - 350) + "px");
@@ -259,6 +260,7 @@ var width = $("#map").width(),
 				d.endDate = formatDate(d["End Date"]);
 				d.source = [d.Source];
 				d.weekend = d["Weekend Flag"];
+				d.reason = [d.Reason];
 			return d;
 			});
 		pointsOverlay.addTo(map);
@@ -321,12 +323,16 @@ var width = $("#map").width(),
 				'<td>'+[d.End_Date]+'</td>'+
 			'</tr>'+
 			'<tr>'+
-				'<td>Weekend Flag:</td>'+
+				'<td>Weekend Work:</td>'+
 				'<td>'+[d.Weekend_Flag]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Source:</td>'+
 				'<td>'+[d.Source]+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Reason:</td>'+
+				'<td>'+[d.Reason]+'</td>'+
 			'</tr>'+
 			
 		'</table>';
