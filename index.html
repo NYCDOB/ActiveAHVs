@@ -208,7 +208,7 @@ var width = $("#map").width(),
 					'COMMUNITY DISTRICT: ' + d.CD + '</br>' +
 					'WORK TYPE: '+ d.workType + '</br>' +
 					'FILING TYPE: '+ d.filingType + '</br>' +
-					'REFERENCE NUMBER: ' + d.refNum + '</br>' +
+					'REFERENCE NUMBER: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/AHVPermitDetailsServlet?requestid=2&allkey=' + d.refNum + '&go4=+GO+&requestid=0" target="_blank">' + d.refNum + '</a>' + '</br>' +
 					'START DATE: ' + d["Start Date"] + '</br>' +
 					'END DATE: ' + d["End Date"] + '</br>' +
 					'WEEKEND WORK: ' + d["Weekend Work"] + '</br>' +
@@ -313,7 +313,7 @@ var width = $("#map").width(),
 			'</tr>'+
 			'<tr>'+
 				'<td>Reference Number:</td>'+
-				'<td>'+[d.Reference_Number]+'</td>'+
+				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/AHVPermitDetailsServlet?requestid=2&allkey=' + [d.Reference_Number] + '&go4=+GO+&requestid=0" target="_blank">' + [d.Reference_Number] + '</a>'+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Start Date:</td>'+
