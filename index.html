@@ -290,9 +290,10 @@ var width = $("#map").width(),
 	function format ( d ) {
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
 			'<tr>'+
+				'<td>Job Number:</td>'+
 				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + [d.Job_Number] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + [d.Job_Number] + '</a>'+'</td>'+
 				//'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d['Job Number'] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d['Job Number'] + '</a>'+'</td>'+
-				'<td>'+[d.Job_Number] +'</td>'+
+				
 			'</tr>'+
 			'<tr>'+
 				'<td>BIN:</td>'+
