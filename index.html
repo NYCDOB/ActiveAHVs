@@ -202,7 +202,7 @@ var width = $("#map").width(),
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.style("visibility", "visible");
 				tooltip.html(
-					'JOB NUMBER: ' + d["Job Number"] + '</br>' +
+					'JOB NUMBER: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d["Job Number"] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d["Job Number"] + '</a>'+ '</br>' +
 					'BIN: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?bin=' + d.bin + '&go4=+GO+&requestid=0" target="_blank">' + d.bin + '</a>' + '</br>' +								
 					'ADDRESS: '+ d.address + ', ' + d.Borough + '</br>' +
 					'COMMUNITY DISTRICT: ' + d.CD + '</br>' +
@@ -290,7 +290,7 @@ var width = $("#map").width(),
 	function format ( d ) {
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
 			'<tr>'+
-				'<td>Job Number:</td>'+
+				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + [d.Job_Number] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + [d.Job_Number] + '</a>'+'</td>'+
 				//'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d['Job Number'] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d['Job Number'] + '</a>'+'</td>'+
 				'<td>'+[d.Job_Number] +'</td>'+
 			'</tr>'+
