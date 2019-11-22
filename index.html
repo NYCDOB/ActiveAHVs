@@ -202,18 +202,18 @@ var width = $("#map").width(),
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.style("visibility", "visible");
 				tooltip.html(
-					'JOB NUMBER: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d["Job Number"] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d["Job Number"] + '</a>'+ '</br>' +
-					'BIN: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?bin=' + d.bin + '&go4=+GO+&requestid=0" target="_blank">' + d.bin + '</a>' + '</br>' +								
+					'JOB NUMBER: ' + d["Job Number"] + '</br>' +
+					'BIN: ' + d.bin + '</br>' +								
 					'ADDRESS: '+ d.address + ', ' + d.Borough + '</br>' +
 					'COMMUNITY DISTRICT: ' + d.CD + '</br>' +
 					'WORK TYPE: '+ d.workType + '</br>' +
 					'FILING TYPE: '+ d.filingType + '</br>' +
-					'REFERENCE NUMBER: ' + '<a href= "http://a810-bisweb.nyc.gov/bisweb/AHVPermitDetailsServlet?requestid=2&allkey=' + d.refNum + '&go4=+GO+&requestid=0" target="_blank">' + d.refNum + '</a>' + '</br>' +
+					'REFERENCE NUMBER: ' + d.refNum + '</br>' +
 					'START DATE: ' + d["Start Date"] + '</br>' +
 					'END DATE: ' + d["End Date"] + '</br>' +
 					'WEEKEND WORK: ' + d["Weekend Work"] + '</br>' +
 					'SOURCE: ' + d.source + '</br>' +
-					'REASON: ' + d.reason					
+					'REASON: ' + d.reason
 				)
 				if (d3.event.pageX > (width - 200)) {
 				   tooltip.style("left", (d3.event.pageX - 350) + "px");
@@ -291,13 +291,11 @@ var width = $("#map").width(),
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
 			'<tr>'+
 				'<td>Job Number:</td>'+
-				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + [d.Job_Number] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + [d.Job_Number] + '</a>'+'</td>'+
-				//'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?passjobnumber=' + d['Job Number'] + '&passdocnumber=&go10=+GO+&requestid=0" target="_blank">' + d['Job Number'] + '</a>'+'</td>'+
-				
+				'<td>'+[d.Job_Number]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>BIN:</td>'+
-				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?bin=' + [d.BIN] + '&go4=+GO+&requestid=0" target="_blank">' + [d.BIN] + '</a>'+'</td>'+
+				'<td>'+[d.BIN]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Community District:</td>'+
@@ -313,7 +311,7 @@ var width = $("#map").width(),
 			'</tr>'+
 			'<tr>'+
 				'<td>Reference Number:</td>'+
-				'<td>'+'<a href= "http://a810-bisweb.nyc.gov/bisweb/AHVPermitDetailsServlet?requestid=2&allkey=' + [d.Reference_Number] + '&go4=+GO+&requestid=0" target="_blank">' + [d.Reference_Number] + '</a>'+'</td>'+
+				'<td>'+[d.Reference_Number]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Start Date:</td>'+
@@ -337,7 +335,7 @@ var width = $("#map").width(),
 			'</tr>'+
 			
 		'</table>';
-	}	
+	}		
 	function zoom(lat,lon){
 		map.panTo(new L.LatLng(lat,lon));
 	}
