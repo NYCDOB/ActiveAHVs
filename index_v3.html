@@ -274,7 +274,7 @@ var width = $("#map").width(),
 
 	});
 	//d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
-	d3.csv("data/activeAHVs_010924.csv",function(data){
+	d3.csv("data/activeAHVs.csv",function(data){
 				points = data.map(function(d){
 				d.latLng = [+d.Lat,+d.Lon];
 				d.bin = [d.BIN];				
@@ -347,31 +347,31 @@ var width = $("#map").width(),
 			'</tr>'+
 			'<tr>'+
 				'<td>Community District:</td>'+
-				'<td>'+d["Community Board"]+'</td>'+
+				'<td>'+d["Community_Board"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Work Type:</td>'+
-				'<td>'+d["Work Type"]+'</td>'+
+				'<td>'+d["Work_Type"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Filing Type:</td>'+
-				'<td>'+d["Filing Type Description"]+'</td>'+
+				'<td>'+d["Filing_Type_Description"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Reference Number:</td>'+
-				'<td>'+d["Reference Number"]+'</td>'+
+				'<td>'+d["Reference_Number"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Start Date:</td>'+
-				'<td>'+d["Start Date"]+'</td>'+
+				'<td>'+d["Start_Date"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>End Date:</td>'+
-				'<td>'+d["End Date"]+'</td>'+
+				'<td>'+d["End_Date"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Weekend Work:</td>'+
-				'<td>'+d["Weekend Work"]+'</td>'+
+				'<td>'+d["Weekend_Work"]+'</td>'+
 			'</tr>'+
 			'<tr>'+
 				'<td>Source:</td>'+
@@ -398,7 +398,7 @@ var width = $("#map").width(),
 
 				"ajax": {
 					//"url": "https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVsJson.json",
-					"url": "data/activeAHVs_010924.json",
+					"url": "data/activeAHVsJson.json",
 					"dataSrc": ""
 				},
 				order: [[2, "asc"],[1, "asc"]],
@@ -490,7 +490,7 @@ var width = $("#map").width(),
 				}
 				$(theParent).addClass('selected');
 				highlightPoint(table.row(this).data().BIN);	
-				mylatlong=[table.row(this).data().Lat,table.row(this).data().Lon]
+				mylatlong=[table.row(this).data().Latitude,table.row(this).data().Longitude]
 				zoomToSelected(mylatlong);
 			}
 		});
