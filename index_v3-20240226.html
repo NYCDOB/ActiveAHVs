@@ -24,6 +24,9 @@ body {
 .jobno{
 	margin-left: 20px;
 }
+.cor{
+    display:none;color:white;
+}
 #map {
 	height: 100%;
 	width: 100%;
@@ -65,8 +68,6 @@ tr.shown td.details-control {
 	background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
 	cursor: pointer;
 }
-
-
 .logo{
 	background-image: url('https://nycdob.github.io/EssentialActiveConstruction/images/dob_logo_white.png');
 	background-repeat: no-repeat;
@@ -81,20 +82,18 @@ tr.shown td.details-control {
 	fill-opacity: .7;
 }
 .tooltip {
+	top: 30%;   /* cathycodes */
 	color: #222;
+	border: 2px solid rgb(44, 44, 44);
 	background: #fff;
-	padding: .5em;
+	padding: 0px;  /*cathycodes */
 	text-shadow: #f5f5f5 0 1px 0;
-	border-radius: 7px; 
+	border-radius: 3px; 
 	box-shadow: 0px 0px 2px 0px #a6a6a6; 
 	opacity: 0.9; 
 	position: absolute;
 	visibility: hidden;
-    padding: 0px;  /*cathycodes */    
-    width: 23em;  /*cathycodes */
-    top: 30%;   /* cathycodes */
-    border: 2px solid rgb(44, 44, 44); /* cathycodes */
-    border-radius: 3px; /* cathycodes */
+	width: 23em;  /*cathycodes */
 }
 .dataTables_empty {
   display:none;
@@ -116,6 +115,8 @@ tr.shown td.details-control {
 .navbar-nav>li>a:hover{
 	background-color:#cccccc;
 }
+
+
 .ui{
 	top: 10px;
 	left: 50px;
@@ -212,7 +213,6 @@ a.ndec{
 			  </div>
 	</div>
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js"></script>
 <script src="https://nycdob.github.io/EssentialActiveConstruction/Leaflet.D3SvgOverlay-master/L.D3SvgOverlay.min.js"></script>
@@ -241,7 +241,6 @@ $(document).ready(function(){
     });	
 var map = L.map('map').setView([40.713312, -73.977407], 14);
 
-// L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map); 
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
 
@@ -273,7 +272,8 @@ var width = $("#map").width(),
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.style("visibility", "visible");
-				tooltip.html(dit(d["BIN"],1));
+				//tooltip.html(	dit(d["BIN"],1));
+				tooltip.html(	dit(d.Lat.concat(d.Lon),1));
 			}
 		})
 		.on("mouseover", function(d, i){
@@ -306,19 +306,25 @@ var width = $("#map").width(),
 			return d;
 			});
 		pointsOverlay.addTo(map);
-	});	
+	});
+
+	//function dit(_pl,...args) {
 	function dit(_pl,...args) {
         if (!_pl) {	tooltip.style("visibility","hidden");console.error("Not a valid BIN");return ""};
         let _dX=0;
         let _l=[];
         let doString = (_sObject,_dX, _l)=>{
 		    let _xx='';
-            for ( [k,v] of Object.entries(_sObject) ) {
-                    _xx+=`<div class="_fM3_0"><div style="flex:3">${k}:</div><div style="flex:4">${_l[_dX][`${v}`]}</div></div>`};
-            return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div style="flex:1" ><span class="_pr" title="Previous">&#11207;</span><span class="_nx" title="Next">&#11208;</span></div><div style="float:right;font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div></div><p class="_b"><span class="_head" >BIN: </span><span class="_det">${_l[_dX]["BIN"]}</span></p><div class="_cycleD"> ${_xx}<div><a class="ndec" ${_l[_dX]["link"]} </a><span style="font-size:15px" class="material-symbols-outlined dobicon">open_in_new</span></div></div>`;
+            for ( [k,v] of Object.entries(_sObject) ) {_xx+=`<div class="_fM3_0"><div style="flex:3">${k}:</div><div style="flex:4">${_l[_dX][`${v}`]}</div></div>`};
+            return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div style="flex:1" >
+                <span class="_pr" title="Previous">&#11207;</span><span class="_nx" title="Next">&#11208;</span>
+                </div><div style="float:right;font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div>
+                </div><p class="_b"><span class="_head" >BIN: </span><span class="_det">${_l[_dX]["BIN"]}</span><span class="cor" style="color:white;display:none">${_l[_dX]["Lat"]}${_l[_dX]["Lon"]}</span>
+                </p>
+                <div class="_cycleD"> ${_xx}<div><a class="ndec" ${_l[_dX]["link"]} </a><span style="font-size:15px" class="material-symbols-outlined dobicon">open_in_new</span></div></div>`;
     	}
         let _sortD=(_ID) => {
-            return points.filter( _p=>_p["BIN"]==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
+            return points.filter( _p=>_p.Lat.concat(_p.Lon)==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
         }
         let _dList={"Address":"Address","CB":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};        
 		if (!args[0]){
@@ -328,7 +334,7 @@ var width = $("#map").width(),
                 return;
             }
             if (document.querySelector("._nav").textContent=="1 of 1"||(_pl.target.className!="_pr" && _pl.target.className!="_nx")){return};
-            let theBin=document.querySelector(".tooltip p ._det").innerText;
+            let theBin=document.querySelector(".cor").innerText;
             _l=_sortD(theBin);
             let _sN = parseInt(document.querySelector("._nav").textContent.match(/\d /)[0]);
             if (_pl.target.className=="_pr") {
@@ -345,6 +351,7 @@ var width = $("#map").width(),
             return doString(_dList,_dX,_l);
         };
 	}
+
 	function highlightPoint(r2){
 		a1=document.querySelector("g");
 		a2 = a1.querySelectorAll(".zoomedPoint");
@@ -357,8 +364,6 @@ var width = $("#map").width(),
 			q1.className.baseVal += " " + "zoomedPoint";
 		  }		
 	}
-	
-	
 	function zoomToSelected(latlong){
 			map.setView(latlong,17);
 	}	
@@ -372,11 +377,10 @@ var width = $("#map").width(),
 	}
 	map.on('resize', function(){
 		map.invalidateSize();		
-	});
-	
-		
+	});	
 	function format ( d ) {
 		return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+
 			'<tr>'+
 				'<td>BIN:</td>'+
 				'<td>'+[d.BIN]+'</td>'+
@@ -419,6 +423,8 @@ var width = $("#map").width(),
 			'</tr>'+
 			'<tr>'+
 				'<td>Link:</td>'+
+				//'<td>'+[d.Link]+'</td>'+
+				//'<td><a href= "' + [d.Link] + '" target="_blank">LINK TO DOB WEBSITE</a></td>'
 				'<td><a '+[d.Link]+'</a></td>'
 			'</tr>'+			
 		'</table>';
@@ -432,13 +438,10 @@ var width = $("#map").width(),
 		_ii.style.display="none";_ii.textContent="";_i.appendChild(_ii);
 		document.querySelector(".col-lg-9").appendChild(_i)
 	})
-	
 	$(function(){
 		var table = $('#riskTable').DataTable({
-
 				"ajax": {
 					"url": "https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVsJson.json",
-					//"url": "data/activeAHVsJson.json",
 					"dataSrc": ""
 				},
 				order: [[2, "asc"],[1, "asc"]],
@@ -492,7 +495,7 @@ var width = $("#map").width(),
 				tr.addClass('shown');
 			}
 		});		
-	});
+	});		
 });	
 </script>
 </body>
