@@ -272,7 +272,6 @@ var width = $("#map").width(),
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.style("visibility", "visible");
-				//tooltip.html(	dit(d["BIN"],1));
 				tooltip.html(	dit(d.Lat.concat(d.Lon),1));
 			}
 		})
@@ -307,8 +306,6 @@ var width = $("#map").width(),
 			});
 		pointsOverlay.addTo(map);
 	});
-
-	//function dit(_pl,...args) {
 	function dit(_pl,...args) {
         if (!_pl) {	tooltip.style("visibility","hidden");console.error("Not a valid BIN");return ""};
         let _dX=0;
