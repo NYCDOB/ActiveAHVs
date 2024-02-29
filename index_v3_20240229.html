@@ -319,7 +319,7 @@ var width = $("#map").width(),
         let _sortD=(_ID) => {
             return points.filter( _p=>_p.Lat.concat(_p.Lon)==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
         }
-        let _dList={"Address":"Address","CB":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};        
+        let _dList={"Address":"Address","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};        
 		if (!args[0]){
         	if (_pl?.target.classList.contains("_cl")) {
                 tooltip.transition().delay(0).style("visibility", "hidden");
