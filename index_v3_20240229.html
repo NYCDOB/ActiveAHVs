@@ -285,6 +285,7 @@ var width = $("#map").width(),
 		});
 		pointsUpd.attr('r', 5 / proj.scale);
 	});
+	let _dList={"Address":"Address","Borough":"Borough","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};
 	d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
 				points = data.map(function(d){
 				d.latLng = [+d.Lat,+d.Lon];
@@ -319,13 +320,12 @@ var width = $("#map").width(),
         let _sortD=(_ID) => {
             return points.filter( _p=>_p.Lat.concat(_p.Lon)==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
         }
-        let _dList={"Address":"Address","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};        
-		if (!args[0]){
-        	if (_pl?.target.classList.contains("_cl")) {
-                tooltip.transition().delay(0).style("visibility", "hidden");
-                document.querySelector(".tooltip").removeEventListener("click",dit);
-                return;
-            }
+	if (!args[0]){
+        if (_pl?.target.classList.contains("_cl")) {
+               tooltip.transition().delay(0).style("visibility", "hidden");
+               document.querySelector(".tooltip").removeEventListener("click",dit);
+               return;
+           }
             if (document.querySelector("._nav").textContent=="1 of 1"||(_pl.target.className!="_pr" && _pl.target.className!="_nx")){return};
             let _key=document.querySelector("._cor").innerText;
             _l=_sortD(_key);  if (!_l[0])   {tooltip.style("visibility","hidden");console.error("Invalid key");return ""};
