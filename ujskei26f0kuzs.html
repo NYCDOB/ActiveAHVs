@@ -15,7 +15,7 @@ padding:0;
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;  
 }
 .lastupdate{
-	font-size:.60em;
+	font-size:.40em;
 }
 .filterTableButton {
 	margin-right:5px;
@@ -139,7 +139,18 @@ tr.shown td.details-control {
     font-weight: bolder;
     align-items: center;
     padding: 15px 5%;
-flex-wrap:wrap;background-color:#f3f3f3;font-size:.95em;
+	flex-wrap:wrap;
+	background-color:#f3f3f3;
+	font-size:.95em;
+}
+.logo{
+	background-image: url('https://raw.githubusercontent.com/NYCDOB/CommunityProfiles_v2/gh-pages/dob_logo_white_transparent.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	float: right;
+	background-size: 80px;
+	height: 50px;
+	width: 110px;	  
 }
 
 tr[role="row"]:hover td {
@@ -216,7 +227,7 @@ header, footer {
 	z-index: 10;
 	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-header{
+/* header{
 	align-items:center;
 	font-size:1.5em;
 	font-weight:bolder;
@@ -224,15 +235,40 @@ header{
 	display:flex;
 	justify-content:space-between;
 }
+
+header, footer {
+	color: #ffffff;
+	padding: 1rem 5rem;
+	flex-shrink: 0;
+	z-index: 10;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+} */
+header{
+	align-items:center;
+	font-size:2em;
+	font-weight:bolder;
+	background-color:RGB(40, 56, 124);
+	display:flex;
+	justify-content: space-between;
+}
 </style>
 <body>
-<header>
+
+	<header>
+	<div>ACTIVE AFTER HOURS VARIANCES <span class="lastupdate"></span></div><!-- <div class="lastupdate"></div> -->
+	<!-- <div><a href="https://www1.nyc.gov/site/buildings/index.page" target="_blank"0><img height=125px  src="https://nycdob.github.io/EssentialActiveConstruction/images/dob_logo_white.png"></a></div> -->
+	<div><a class="logo" href="https://www1.nyc.gov/site/buildings/index.page" target="_blank"> </a></div>
+</header>
+
+
+
+<!-- <header>
 	<div><a href="https://www1.nyc.gov/site/buildings/index.page" target="_blank"0><img height=50px;
 	width=50px; src="https://nycdob.github.io/EssentialActiveConstruction/images/dob_logo_white.png"> </a>
 				ACTIVE AFTER HOURS VARIANCES</div>
-	 <!-- <div class="lastupdate">Last Updated: <span class="lastupdate"></div> -->
+	 <div class="lastupdate">Last Updated: <span class="lastupdate"></div> 
 	 <div class="lastupdate"></div>
-</header>
+</header> -->
 <div class="notes">
 This map shows all locations which currently have an 
 <a href="https://www.nyc.gov/site/buildings/property-or-business-owner/after-hour-variances-info.page" target="_blank">
@@ -359,7 +395,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 			});
 		pointsOverlay.addTo(map);
 		let lastupdate=Object.keys(data[0]).find(thefieldname => /^Date\:/.test(thefieldname))?.substr(5) || 'n/a';
-		!lastupdate ? 'Last Update: n/a':document.querySelector(".lastupdate").innerText=`Last Update: ${lastupdate}`;
+		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`;
 	});
 	let dit=(_pl,...args)=>{
 		//if (!_pl) {tooltip.style("visibility","hidden");console.error("Invalid key");return ""}; //******************* 
