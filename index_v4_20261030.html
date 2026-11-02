@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <title>ACTIVE AHVs</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0,  user-scalable=yes' />
   <link rel="icon" type="image/png" href="https://nycdob.github.io/EssentialActiveConstruction/images/logo.png">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
   <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css' rel='stylesheet' type='text/css'/>
@@ -17,6 +17,7 @@ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .lastupdate{
 	font-size:.40em;
+	white-space: nowrap;
 }
 .filterTableButton {
 	margin-right:5px;
@@ -84,14 +85,16 @@ tr.shown td.details-control {
 	font-weight: 500;
 	background: #fff;
 	border-radius: 3px; 
-	opacity: 0.9; 
-	position: absolute;
+	opacity: 1; 
+	position: fixed; /*absolute*/
 	border: 2px solid #707070;
-	bottom: 5px;
+	zbottom: 5px;
+	height:auto;
 	width: 25em;
-	font-size:.75em;
+	zfont-size:.75em;
 	padding:0px;
 	left:5px;
+	top:250px;
 	display:none;
 	flex-direction: column;	
 }
@@ -227,22 +230,6 @@ header, footer {
 	z-index: 10;
 	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-/* header{
-	align-items:center;
-	font-size:1.5em;
-	font-weight:bolder;
-	background-color:RGB(40, 56, 124);
-	display:flex;
-	justify-content:space-between;
-}
-
-header, footer {
-	color: #ffffff;
-	padding: 1rem 5rem;
-	flex-shrink: 0;
-	z-index: 10;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-} */
 header{
 	align-items:center;
 	font-size:2em;
@@ -311,17 +298,11 @@ To view the specific hours authorized, click on a location and then click the li
 <script>
 
 $(document).ready(function(){
-	// var today = new Date();
-	// var dd = today.getDate();
-	// var mm = today.getMonth()+1;
-	// var yyyy = today.getFullYear();
-	// today = mm + '/' + dd + '/' + yyyy;	
-	// d3.select("#today").html(today);
 	var latlong = [];
 	var selection = [];
 	var formatDate = d3.time.format("%-m/%-d/%Y").parse;
     L.Control.include({
-      _refocusOnMap: L.Util.falseFn //Do nothing.
+      _refocusOnMap: L.Util.falseFn 
     });	
 var map = L.map('map').setView([  40.75439, -73.88753], 12);// var map = L.map('map').setView([40.713312, -73.977407], 13);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_27tu_1_978b0622efbf904b17d1bcc4', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
@@ -347,8 +328,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.html(dit( d.Lat.concat(d.Lon),1)); 
-				//tooltip.style("visibility", "visible")} // ***********************************
-				tooltip.style("display", "flex")} // ***********************************
+				document.querySelector("#map").scrollIntoView({behavior:"smooth",block:"nearest"})
+				tooltip.style("display", "flex")} 
 		})
 		.on("mouseover", function(d, i){
 			$(this).attr("style", "cursor: pointer; fill: #eef442; fill-opacity: 1;");		
@@ -361,7 +342,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 	let lastdate=null;
 	let _lObj={"Address":"Address","Borough":"Borough","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};
 	d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
-	// d3.csv("activeAHVs.csv",function(data){
+
 				//points = data.map(function(d){
 				points = data.map(function(d){
 				d.latLng = [+d.Lat,+d.Lon];
@@ -383,10 +364,9 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 			});
 		pointsOverlay.addTo(map);
 		let lastupdate=Object.keys(data[0]).find(thefieldname => /^Date\:/.test(thefieldname))?.substr(5) || 'n/a';
-		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`;
+		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`; //*******************************
 	});
 	let dit=(_pl,...args)=>{
-		//if (!_pl) {tooltip.style("visibility","hidden");console.error("Invalid key");return ""}; //******************* 
 		if (!_pl) {tooltip.style("display","none");console.error("Invalid key");return ""}; //******************* 
 		if (!args[0] && !_pl.target.className.match(/_pr|_nx|_cl/)) {return};
 		let _dX=0;
@@ -395,16 +375,13 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 				let _xx='';
 				let cleanhref=_l[_dX]["link"]!=''?`href=${ _l[_dX]["link"]?.toString().split('"')[1]} target='_blank'` : null;
 				for ( [k,v] of Object.entries(_sObject) ) {_xx+=`<div class="_fM3_0"><div>${k}:</div><div>${_l[_dX][`${v}`]}</div></div>`};
-				return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div><span class="_pr" title="Previous">&#11207;</span><span class="_nx" title="Next">&#11208;</span></div><div style="font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div></div>
+				return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div><span class="_pr" title="Previous">&#x25C0;</span> <span class="_nx" title="Next">&#x25B6;</span></div><div style="font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div></div>
 				<p class="_b"><span>BIN: </span><span><a class="ndec" ${cleanhref}>${_l[_dX]["BIN"]}</a></span><span class="_cor">${_l[_dX]["Lat"]}${_l[_dX]["Lon"]}</span></p><div class="_cycleD">${_xx}`;
 			}
-			//href='${ _l[_dX]["link"]?.toString().split('"')[1] || ""}' target='_blank'>
-			// <div><a class="ndec" ${_l[_dX]["link"]}</a><span class="material-symbols-outlined dobicon">open_in_new</span></div></div>`;  //move this inside doString
 			let _sortD=(_ID) => {
 				return points.filter( _p=>_p.Lat.concat(_p.Lon)==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
 			}		;	
 			let _clr=()=>{
-			//tooltip.transition().delay(0).style("visibility", "hidden");document.querySelector(".tooltip").innerHTML=""; // ********************
 			tooltip.transition().delay(0).style("display", "none");document.querySelector(".tooltip").innerHTML=""; // ********************
 			document.querySelector(".tooltip").removeEventListener("click",dit);
 		}
