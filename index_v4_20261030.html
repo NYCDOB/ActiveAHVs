@@ -87,9 +87,10 @@ tr.shown td.details-control {
 	opacity: 0.9; 
 	position: absolute;
 	border: 2px solid #707070;
-	bottom: 5px;
+	zbottom: 5px;
+	height:auto;
 	width: 25em;
-	font-size:.75em;
+	zfont-size:.75em;
 	padding:0px;
 	left:5px;
 	display:none;
@@ -347,7 +348,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.html(dit( d.Lat.concat(d.Lon),1)); 
-				//tooltip.style("visibility", "visible")} // ***********************************
+
+				tooltip.style("top",`${document.querySelector("#map").getBoundingClientRect().top}px`);
+
+
 				tooltip.style("display", "flex")} // ***********************************
 		})
 		.on("mouseover", function(d, i){
@@ -386,7 +390,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`;
 	});
 	let dit=(_pl,...args)=>{
-		//if (!_pl) {tooltip.style("visibility","hidden");console.error("Invalid key");return ""}; //******************* 
 		if (!_pl) {tooltip.style("display","none");console.error("Invalid key");return ""}; //******************* 
 		if (!args[0] && !_pl.target.className.match(/_pr|_nx|_cl/)) {return};
 		let _dX=0;
@@ -398,13 +401,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 				return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div><span class="_pr" title="Previous">&#x25C0;</span> <span class="_nx" title="Next">&#x25B6;</span></div><div style="font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div></div>
 				<p class="_b"><span>BIN: </span><span><a class="ndec" ${cleanhref}>${_l[_dX]["BIN"]}</a></span><span class="_cor">${_l[_dX]["Lat"]}${_l[_dX]["Lon"]}</span></p><div class="_cycleD">${_xx}`;
 			}
-			//href='${ _l[_dX]["link"]?.toString().split('"')[1] || ""}' target='_blank'>
-			// <div><a class="ndec" ${_l[_dX]["link"]}</a><span class="material-symbols-outlined dobicon">open_in_new</span></div></div>`;  //move this inside doString
 			let _sortD=(_ID) => {
 				return points.filter( _p=>_p.Lat.concat(_p.Lon)==_ID).sort((x,y)=>{return Date.parse(x["End Date"]) < Date.parse(y["End Date"])?1:-1;} );
 			}		;	
 			let _clr=()=>{
-			//tooltip.transition().delay(0).style("visibility", "hidden");document.querySelector(".tooltip").innerHTML=""; // ********************
 			tooltip.transition().delay(0).style("display", "none");document.querySelector(".tooltip").innerHTML=""; // ********************
 			document.querySelector(".tooltip").removeEventListener("click",dit);
 		}
