@@ -328,9 +328,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.html(dit( d.Lat.concat(d.Lon),1)); 
 
-				// tooltip.style("top",`250px`);
-				tooltip.style("top",`${document.querySelector('#map').getBoundingClientRect().top}px`);
-				document.querySelector(".tooltip").scrollIntoView({behavior:"smooth",block:"nearest"})
+				tooltip.style("top",`250px`);
+				// tooltip.style("top",`${document.querySelector('#map').getBoundingClientRect().top}px`);
+				// document.querySelector(".tooltip").scrollIntoView({behavior:"smooth",block:"nearest"})
+				document.querySelector("#map").scrollIntoView({behavior:"smooth",block:"nearest"})
 				tooltip.style("display", "flex")} 
 		})
 		.on("mouseover", function(d, i){
