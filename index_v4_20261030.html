@@ -84,7 +84,7 @@ tr.shown td.details-control {
 	font-weight: 500;
 	background: #fff;
 	border-radius: 3px; 
-	opacity: 0.9; 
+	opacity: 1; 
 	position: absolute;
 	border: 2px solid #707070;
 	zbottom: 5px;
@@ -228,22 +228,6 @@ header, footer {
 	z-index: 10;
 	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-/* header{
-	align-items:center;
-	font-size:1.5em;
-	font-weight:bolder;
-	background-color:RGB(40, 56, 124);
-	display:flex;
-	justify-content:space-between;
-}
-
-header, footer {
-	color: #ffffff;
-	padding: 1rem 5rem;
-	flex-shrink: 0;
-	z-index: 10;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-} */
 header{
 	align-items:center;
 	font-size:2em;
@@ -312,17 +296,11 @@ To view the specific hours authorized, click on a location and then click the li
 <script>
 
 $(document).ready(function(){
-	// var today = new Date();
-	// var dd = today.getDate();
-	// var mm = today.getMonth()+1;
-	// var yyyy = today.getFullYear();
-	// today = mm + '/' + dd + '/' + yyyy;	
-	// d3.select("#today").html(today);
 	var latlong = [];
 	var selection = [];
 	var formatDate = d3.time.format("%-m/%-d/%Y").parse;
     L.Control.include({
-      _refocusOnMap: L.Util.falseFn //Do nothing.
+      _refocusOnMap: L.Util.falseFn 
     });	
 var map = L.map('map').setView([  40.75439, -73.88753], 12);// var map = L.map('map').setView([40.713312, -73.977407], 13);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_27tu_1_978b0622efbf904b17d1bcc4', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
@@ -348,11 +326,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.html(dit( d.Lat.concat(d.Lon),1)); 
-
 				tooltip.style("top",`${document.querySelector("#map").getBoundingClientRect().top}px`);
-
-
-				tooltip.style("display", "flex")} // ***********************************
+				tooltip.style("display", "flex")} 
 		})
 		.on("mouseover", function(d, i){
 			$(this).attr("style", "cursor: pointer; fill: #eef442; fill-opacity: 1;");		
@@ -365,7 +340,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 	let lastdate=null;
 	let _lObj={"Address":"Address","Borough":"Borough","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};
 	d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
-	// d3.csv("activeAHVs.csv",function(data){
 				//points = data.map(function(d){
 				points = data.map(function(d){
 				d.latLng = [+d.Lat,+d.Lon];
