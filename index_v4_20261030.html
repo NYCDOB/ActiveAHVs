@@ -358,7 +358,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 				d.weekend = d["Weekend Work"];
 				d.reason = [d.Reason];
 				d.link = [d.Link];
-				console.log(d.link)
 			return d;
 			});
 		pointsOverlay.addTo(map);
@@ -373,8 +372,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		let doString = (_sObject,_dX, _l)=>{
 				let _xx='';
 				let cleanhref=_l[_dX]["link"]!=''?`href=${ _l[_dX]["link"]?.toString().split('"')[1]} target='_blank'` : null;
-				console.log(cleanhref);
-
 				for ( [k,v] of Object.entries(_sObject) ) {_xx+=`<div class="_fM3_0"><div>${k}:</div><div>${_l[_dX][`${v}`]}</div></div>`};
 				return `<div class="_tD"><div class="_nav">${_dX+1} of ${_l.length}</div><div><span class="_pr" title="Previous">&#x25C0;</span> <span class="_nx" title="Next">&#x25B6;</span></div><div style="font-size:17px;" title="Close" class="material-symbols-outlined _cl">close</div></div>
 				<p class="_b"><span>BIN: </span><span><a class="ndec" ${cleanhref}>${_l[_dX]["BIN"]}</a></span><span class="_cor">${_l[_dX]["Lat"]}${_l[_dX]["Lon"]}</span></p><div class="_cycleD">${_xx}`;
