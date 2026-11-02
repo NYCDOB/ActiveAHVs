@@ -17,6 +17,7 @@ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .lastupdate{
 	font-size:.40em;
+	white-space: nowrap;
 }
 .filterTableButton {
 	margin-right:5px;
@@ -327,10 +328,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 		.on('click', function(d){  
 			if(d3.select(this).style("fill-opacity") != 0){
 				tooltip.html(dit( d.Lat.concat(d.Lon),1)); 
-
-				tooltip.style("top",`250px`);
-				// tooltip.style("top",`${document.querySelector('#map').getBoundingClientRect().top}px`);
-				// document.querySelector(".tooltip").scrollIntoView({behavior:"smooth",block:"nearest"})
 				document.querySelector("#map").scrollIntoView({behavior:"smooth",block:"nearest"})
 				tooltip.style("display", "flex")} 
 		})
@@ -345,6 +342,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 	let lastdate=null;
 	let _lObj={"Address":"Address","Borough":"Borough","Community District":"Community Board","Work Type":"Work Type","Filing Type":"Filing Type Description","Reference #":"Reference Number","Start Date":"Start Date","End Date":"End Date", "Weekend Work":"Weekend Work", "Source":"Source","Reason":"Reason"};
 	d3.csv("https://raw.githubusercontent.com/NYCDOB/ActiveAHVs/gh-pages/data/activeAHVs.csv",function(data){
+
 				//points = data.map(function(d){
 				points = data.map(function(d){
 				d.latLng = [+d.Lat,+d.Lon];
@@ -366,7 +364,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1
 			});
 		pointsOverlay.addTo(map);
 		let lastupdate=Object.keys(data[0]).find(thefieldname => /^Date\:/.test(thefieldname))?.substr(5) || 'n/a';
-		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`;
+		!lastupdate ? '':document.querySelector(".lastupdate").innerText=`As of ${lastupdate}`; //*******************************
 	});
 	let dit=(_pl,...args)=>{
 		if (!_pl) {tooltip.style("display","none");console.error("Invalid key");return ""}; //******************* 
